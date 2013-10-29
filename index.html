@@ -20,19 +20,14 @@
       <script src="../../assets/js/html5shiv.js"></script>
       <script src="../../assets/js/respond.min.js"></script>
     <![endif]-->
-  </head>
+   </head>
+   <body>
 
-  <body>
-
-    <!-- Static navbar -->
-    <div class="navbar navbar-default navbar-static-top">
+   <!-- Static navbar -->
+   <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"></button>
           <a class="navbar-brand" href="#">Simpic</a>
         </div>
         <div class="navbar-collapse collapse">
@@ -47,8 +42,16 @@
               </ul>
             </li>
             <li><a href="#search">Search</a></li>
-            <li><a href="#register">Register</a></li>
-            <li><a href="#login">Login</a></li>
+            <li><a data-toggle="modal" href="#register">Register</a></li>
+            <li><a data-toggle="modal" href="#login">Login</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+          <form class="navbar-form form-inline">
+            <div class="btn-group">
+               <li><button type="button" class="btn btn-primary">Upload Photo</button></li>
+            </div>
+         </form>
+         </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
@@ -71,23 +74,60 @@
       <img src="profile.png" class="img-thumbnail" alt="Responsive image">
     </div> <!-- /container -->
     
-    
     <!-- Static bottom navbar -->
     <div class="navbar navbar-default navbar-fixed-bottom">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".bottom-collapse"></button><!-- NOTE! data-target was changed to .bottom-collapse -->
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".bottom-collapse"></button> <!-- NOTE! data-target was changed to .bottom-collapse -->
         </div>
         <div class="navbar-collapse collapse bottom-collapse"> <!-- NOTE! The extra bottom-collapse class put on here -->
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Contact Us</a></li>
+            <li><a href="#">Contact Us</a></li>
             <li><a href="#about">FAQ</a></li>
             <li><a href="#contact">About Us</a></li>
             <li><a href="#contact">Copyright</a></li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div> <!-- /.nav-collapse -->
       </div>
     </div>
+
+   <!-- Login Modal -->
+   <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Modal title</h4>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+   </div><!-- /.modal -->
+
+   <!-- Login Modal -->
+   <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Modal title</h4>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+   </div><!-- /.modal -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
