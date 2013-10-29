@@ -1,11 +1,12 @@
 body {
-  min-height: 2000px;
+  min-height: 1350px;
 }
 
 .navbar-static-top {
   margin-bottom: 19px;
 }
 
-#logo {
-   
+.img-responsive {
+    margin: 0 auto;
+    border-radius: 10px;
 }
