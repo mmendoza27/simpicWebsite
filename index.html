@@ -32,13 +32,13 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="#">People</a></li>
+            <li><a href="#people">People</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Images <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="#popular">Popular</a></li>
                 <li><a href="#current">Current</a></li>
-                <li><a href="#topCommented">Top Commented</a></li>
+                <li><a href="#topComments">Top Commented</a></li>
               </ul>
             </li>
             <li><a href="#search">Search</a></li>
@@ -48,7 +48,7 @@
           <ul class="nav navbar-nav navbar-right">
           <form class="navbar-form form-inline">
             <div class="btn-group">
-               <li><button type="button" class="btn btn-primary">Upload Photo</button></li>
+               <li><a data-toggle="modal" href="#upload"><button type="button" class="btn btn-primary">Upload Photo</button></a></li>
             </div>
          </form>
          </ul>
@@ -60,6 +60,25 @@
       <div class="container">
          <img src="Logo.png" class="img-responsive" alt="Responsive image">
       </div> <!-- /container -->
+    </div>
+    
+    <div class="alert alert-info">
+    
+    <div class="row">
+     <div class="col-lg-12">
+       <div class="input-group">
+         <input type="text" class="form-control">
+         <div class="input-group-btn">
+           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Search  <span class="caret"></span></button>
+           <ul class="dropdown-menu pull-right">
+             <li><a href="#">Usernames</a></li>
+             <li><a href="#">Tags</a></li>
+           </ul>
+         </div><!-- /btn-group -->
+       </div><!-- /input-group -->
+     </div><!-- /.col-lg-6 -->
+   </div><!-- /.row -->
+       
     </div>
     
     <div class="container">
@@ -91,20 +110,60 @@
       </div>
     </div>
 
-   <!-- Login Modal -->
+   <!-- Register Modal -->
    <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Modal title</h4>
+          <h4 class="modal-title">Register</h4>
         </div>
         <div class="modal-body">
-          ...
+        
+      <form class="form-horizontal" role="form">
+      <div class="form-group">
+       <label for="inputUserName1" class="col-lg-2 control-label">User ID</label>
+       <div class="col-lg-10">
+         <input type="text" class="form-control" id="inputUserName1" placeholder="Username">
+       </div>
+      </div>
+      <div class="form-group">
+       <label for="inputEmail1" class="col-lg-2 control-label">Email</label>
+       <div class="col-lg-10">
+         <input type="email" class="form-control" id="inputEmail1" placeholder="Email">
+       </div>
+      </div>
+      <div class="form-group">
+       <label for="inputPassword1" class="col-lg-2 control-label">Password</label>
+       <div class="col-lg-10">
+         <input type="password" class="form-control" id="inputPassword1" placeholder="Password">
+       </div>
+      </div>
+      <div class="form-group">
+       <label for="inputPassword2" class="col-lg-2 control-label">Verify</label>
+       <div class="col-lg-10">
+         <input type="password" class="form-control" id="inputPassword2" placeholder="Verify Password">
+       </div>
+      </div>
+
+      <div class="form-group">
+       <label for="inputGender1" class="col-lg-2 control-label">Gender</label>
+         <label class="radio-inline">
+           <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+           Male
+         </label>
+         <label class="radio-inline">
+           <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+           Female
+         </label>
+      </div>
+        
+      </form>
         </div>
+        
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary">Register</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -116,18 +175,60 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Modal title</h4>
+          <h4 class="modal-title">Login</h4>
         </div>
+        
         <div class="modal-body">
-          ...
+        <form class="form-horizontal" role="form">
+         <div class="form-group">
+          <label for="inputUser1" class="col-lg-2 control-label">User ID</label>
+          <div class="col-lg-10">
+            <input type="text" class="form-control" id="inputUser1" placeholder="Username">
+          </div>
+         </div>
+         <div class="form-group">
+          <label for="inputPassword1" class="col-lg-2 control-label">Password</label>
+          <div class="col-lg-10">
+            <input type="password" class="form-control" id="inputPassword1" placeholder="Password">
+          </div>
+         </div>
+       </form>
         </div>
+        
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary">Login</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
    </div><!-- /.modal -->
+
+
+   <!-- Upload Modal -->
+   <div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Upload Photo</h4>
+        </div>
+        
+        <div class="modal-body">
+          <div class="form-group">
+             <label for="inputFile">Upload Photo</label>
+             <input type="file" id="inputFile">
+             <p class="help-block">Please upload your picture from your device.</p>
+           </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary">Upload</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+   </div><!-- /.modal -->
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
