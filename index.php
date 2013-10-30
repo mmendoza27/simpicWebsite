@@ -35,7 +35,7 @@ session_start();
           
           <?php
             if (isset($_SESSION['userID']) && isset($_COOKIE['LoginCredentials'])) {
-               echo "<a class='navbar-brand' href='#'>$_SESSION[userID]</a>";
+               echo "<a data-toggle='modal' class='navbar-brand' href='#editProfile'>$_SESSION[userID]</a>";
             } else {
                echo "<a class='navbar-brand' href='#'>Simpic</a>";
             }
@@ -260,6 +260,63 @@ session_start();
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-primary">Upload</button>
         </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+   </div><!-- /.modal -->
+
+
+   <!-- Edit Profile Modal -->
+   <div class="modal fade" id="editProfile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Edit Profile</h4>
+        </div>
+        <div class="modal-body">
+        
+      <form name="editProfile" action="editProfile.php" class="form-horizontal" role="form" method="post">
+      <div class="form-group">
+       <label for="inputEmail1" class="col-lg-2 control-label">Email</label>
+       <div class="col-lg-10">
+         <input type="email" name="inputEmail1" class="form-control" id="inputEmail1" placeholder="Email">
+       </div>
+      </div>
+      <div class="form-group">
+       <label for="inputPassword1" class="col-lg-2 control-label">Password</label>
+       <div class="col-lg-10">
+         <input type="password" name="inputPassword1" class="form-control" id="inputPassword1" placeholder="Password">
+       </div>
+      </div>
+      <div class="form-group">
+       <label for="inputPassword2" class="col-lg-2 control-label"></label>
+       <div class="col-lg-10">
+         <input type="password" class="form-control" id="inputPassword2" placeholder="Verify Password">
+       </div>
+      </div>
+      <div class="form-group">
+       <label for="inputDisplay1" class="col-lg-2 control-label">Username</label>
+       <div class="col-lg-10">
+         <input type="text" name="inputDisplay1" class="form-control" id="inputDisplay1" placeholder="Username">
+       </div>
+      </div>
+      
+      <div class="modal-body">
+       <div class="form-group">
+          <label for="inputFile">Upload Photo</label>
+          <input name="inputFile" type="file" id="inputFile">
+          <p class="help-block">You may upload a new profile picture from your device.</p>
+        </div>
+     </div>
+      
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Edit Profile</button>
+        </div>
+      </form>
+
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
    </div><!-- /.modal -->
