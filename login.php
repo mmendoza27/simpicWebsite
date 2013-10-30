@@ -1,6 +1,11 @@
 <?php 
 session_start();
 $con = mysqli_connect('localhost', 'krobbins', 'abc123', 'simpic');
+
+if (mysqli_connect_errno()) {
+        echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
+}
+
 $username = $_POST['inputUser1'];
 $password = $_POST['inputPassword1'];
 
