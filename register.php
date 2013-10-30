@@ -34,6 +34,6 @@ if (!mysqli_query($con, $query)) {
 mysqli_close($con);
 
 // Return to the main page after this.
-header('Location: ./index.html');
+header('Location: ./index.php');
 
 ?>

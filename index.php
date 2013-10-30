@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,7 +32,15 @@
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"></button>
-          <a class="navbar-brand" href="#">Simpic</a>
+          
+          <?php
+            if (isset($_SESSION['userID']) && isset($_COOKIE['LoginCredentials'])) {
+               echo "<a class='navbar-brand' href='#'>$_SESSION[userID]</a>";
+            } else {
+               echo "<a class='navbar-brand' href='#'>Simpic</a>";
+            }
+         ?> 
+          
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -42,13 +54,25 @@
               </ul>
             </li>
             <li><a data-toggle="collapse" data-target="#search" href="#">Search</a></li>
-            <li><a data-toggle="modal" href="#register">Register</a></li>
-            <li><a data-toggle="modal" href="#login">Login</a></li>
+            
+            <?php
+                  if (isset($_SESSION['userID']) && isset($_COOKIE['LoginCredentials'])) {
+                     echo "<li><a href='#profile'>Profile</a></li><li><a href='logout.php'>Logout</a></li>";
+                  } else {
+                     echo "<li><a data-toggle='modal' href='#register'>Register</a></li><li><a data-toggle='modal' href='#login'>Login</a></li>";
+                  }
+            ?>            
           </ul>
           <ul class="nav navbar-nav navbar-right">
           <form class="navbar-form form-inline">
             <div class="btn-group">
-               <li><a data-toggle="modal" href="#upload"><button type="button" class="btn btn-primary">Upload Photo</button></a></li>
+            
+            <?php
+               if (isset($_SESSION['userID']) && isset($_COOKIE['LoginCredentials'])) {
+                  echo "<li><a data-toggle='modal' href='#upload'><button type='button' class='btn btn-primary'>Upload Photo</button></a></li>";
+               }
+            ?>
+            
             </div>
          </form>
          </ul>

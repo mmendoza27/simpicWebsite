@@ -22,10 +22,10 @@ if ($result = mysqli_query($con, $query)) {
                 $_SESSION['userID'] = $row['username'];
                 $_SESSION['id'] = $row['id'];
                 setcookie("LoginCredentials", $_SESSION['userID'], time() + 86400);
-                header("Location: ./index.html");
+                header("Location: ./index.php");
         } else {
                 echo "Incorrect login credentials! Redirecting...";
-                header("Refresh: 3; URL=./index.html");
+                header("Refresh: 3; URL=./index.php");
         }
 }
 
