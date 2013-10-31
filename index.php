@@ -49,7 +49,7 @@ session_start();
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Images <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="#popular">Popular</a></li>
-                <li><a href="#current">Current</a></li>
+                <!-- <li><a href="#current">Current</a></li> -->
                 <li><a href="#topComments">Top Commented</a></li>
               </ul>
             </li>
@@ -88,8 +88,6 @@ session_start();
 
         <span class="input-group-addon">@</span>
         <input type="text" class="form-control" placeholder="Username">
-        <span class="input-group-addon">#</span>
-        <input type="text" class="form-control" placeholder="Tag">
 
       <span class="input-group-btn">
         <button class="btn btn-default" type="button">Search</button>

@@ -1,5 +1,5 @@
 body {
-  min-height: 1350px;
+  min-height: 1500px;
 }
 
 .navbar-static-top {
@@ -34,6 +34,7 @@ body {
    width: 350px;
    height: 300px;
    margin: 15px;
+   display: inline-block;
    position: relative;
    overflow: hidden;
 }
