@@ -106,18 +106,33 @@ session_start();
          <img src="./assets/img/static/Logo.png" class="img-responsive" alt="Responsive image">
       </div> <!-- /container -->
     </div>
-        
+    
+    
     <div class="container">
-      <img src="./assets/img/static/profile.png" class="img-thumbnail" alt="Responsive image">
-      <img src="./assets/img/static/profile.png" class="img-thumbnail" alt="Responsive image">
-      <img src="./assets/img/static/profile.png" class="img-thumbnail" alt="Responsive image">
-      <img src="./assets/img/static/profile.png" class="img-thumbnail" alt="Responsive image">
-      <img src="./assets/img/static/profile.png" class="img-thumbnail" alt="Responsive image">
-      <img src="./assets/img/static/profile.png" class="img-thumbnail" alt="Responsive image">
-      <img src="./assets/img/static/profile.png" class="img-thumbnail" alt="Responsive image">
-      <img src="./assets/img/static/profile.png" class="img-thumbnail" alt="Responsive image">
-      <img src="./assets/img/static/profile.png" class="img-thumbnail" alt="Responsive image">
-    </div> <!-- /container -->
+
+    <?php
+       $con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
+       
+       if (mysqli_connect_errno()) {
+         echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
+       }
+
+       $query = "SELECT * FROM users ORDER BY `registration_date` DESC LIMIT 9";
+
+       if (!mysqli_query($con, $query)) {
+         die('Error: ' . mysqli_error($con));
+       }
+
+       if ($result = mysqli_query($con, $query)) {
+         while ($row = $result->fetch_array()) {
+            $username = $row['username'];
+            echo "<a href='#'><div class='thumbnail'><div class='caption-btm'><p>$username</p></div><img src='$row[profile_photo]' class='img-thumbnail' alt='Responsive image'/></div></a>";
+         }
+       }
+
+       mysqli_close($con);
+    ?>
+    </div> <!-- /container -->    
     
     <!-- Static bottom navbar -->
     <div class="navbar navbar-default navbar-fixed-bottom">
@@ -326,6 +341,7 @@ session_start();
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/usernameHover.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
   </body>
 </html>

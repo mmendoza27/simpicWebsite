@@ -23,3 +23,34 @@ body {
    margin-top: 45px;
    margin-bottom: -45px;
 }
+
+.img-thumbnail {
+   width: 350px;
+   height: 300px;
+   margin: 15px;
+}
+
+.thumbnail {
+   width: 350px;
+   height: 300px;
+   margin: 15px;
+   position: relative;
+   overflow: hidden;
+}
+
+.caption-btm {
+    background: rgba(0, 0, 0, 0.6);
+    width: 90%;
+    height: 40px;
+    position: absolute;
+    bottom: 0px;
+    color: #fff;
+    display: none;
+    width: 100%;
+}
+
+.caption-btm p {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 150%;
+}
