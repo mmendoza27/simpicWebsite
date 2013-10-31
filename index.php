@@ -32,18 +32,17 @@ session_start();
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"></button>
+            <a class="navbar-brand" href="./index.php"><span class="glyphicon glyphicon-camera"></span> Simpic</a>
+        </div>
+        <div class="navbar-collapse collapse">
+         <ul class="nav navbar-nav">
           
-          <?php
+         <?php
             if (isset($_SESSION['userID']) && isset($_COOKIE['LoginCredentials'])) {
-               echo "<a class='navbar-brand' href='#profilePage'>$_SESSION[userID]</a>";
-            } else {
-               echo "<a class='navbar-brand' href='index.php'>Simpic</a>";
+               echo "<li class=''><a href='#profile.php?'>$_SESSION[userID]</a></li>";
             }
          ?> 
           
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
             <li class=""><a data-toggle="tab" href="#people">People</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Images <b class="caret"></b></a>
@@ -529,13 +528,40 @@ session_start();
           <h4 class="modal-title">Upload Photo</h4>
         </div>
         
-        <div class="modal-body">
-          <div class="form-group">
+      <div class="modal-body">        
+      <form name="registration" action="register.php" class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
+
+         <div class="form-group">
+          <label for="tag1" class="col-lg-2 control-label">Tag 1</label>
+          <div class="col-lg-10">
+            <input type="text" name="tag1" class="form-control" id="tag1" placeholder="Tag 1">
+          </div>
+         </div>
+         
+         <div class="form-group">
+          <label for="tag2" class="col-lg-2 control-label">Tag 2</label>
+          <div class="col-lg-10">
+            <input type="text" name="tag2" class="form-control" id="tag2" placeholder="Tag 2">
+          </div>
+         </div>
+
+         <div class="form-group">
+          <label for="tag3" class="col-lg-2 control-label">Tag 3</label>
+          <div class="col-lg-10">
+            <input type="text" name="tag3" class="form-control" id="tag3" placeholder="Tag 3">
+          </div>
+         </div>
+          
+         <div class="modal-body">
+            <div class="form-group">
              <label for="inputFile">Upload Photo</label>
              <input type="file" id="inputFile">
              <p class="help-block">Please upload your picture from your device.</p>
            </div>
         </div>
+        
+      </form>
+      </div>
         
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
