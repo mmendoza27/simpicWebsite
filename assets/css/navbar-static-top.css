@@ -27,13 +27,11 @@ body {
 .img-thumbnail {
    width: 350px;
    height: 300px;
-   margin: 15px;
 }
 
 .thumbnail {
    width: 350px;
    height: 300px;
-   margin: 15px;
    display: inline-block;
    position: relative;
    overflow: hidden;

@@ -37,14 +37,14 @@ session_start();
             if (isset($_SESSION['userID']) && isset($_COOKIE['LoginCredentials'])) {
                echo "<a class='navbar-brand' href='#profilePage'>$_SESSION[userID]</a>";
             } else {
-               echo "<a class='navbar-brand' href='#home'>Simpic</a>";
+               echo "<a class='navbar-brand' href='#'>Simpic</a>";
             }
          ?> 
           
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class=""><a data-toggle="tab" href="#people">People</a></li>
+            <li class="active"><a data-toggle="tab" href="#people">People</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Images <b class="caret"></b></a>
               <ul class="dropdown-menu">
@@ -105,11 +105,8 @@ session_start();
       </div> <!-- /container -->
     </div>
     
-<div class="tab-content">
-   <div class="tab-pane active" id="home">
-     <p>Home!!</p>
-   </div>
-   <div class="tab-pane" id="people">
+<div class="tab-content" style="padding-bottom: 9px; border-bottom: 1px solid #ddd;">
+   <div class="tab-pane active" id="people">
      <p>Most Recently Created Profiles</p>
    </div>
    <div class="tab-pane" id="popular">
