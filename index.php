@@ -37,7 +37,7 @@ session_start();
             if (isset($_SESSION['userID']) && isset($_COOKIE['LoginCredentials'])) {
                echo "<a class='navbar-brand' href='#profilePage'>$_SESSION[userID]</a>";
             } else {
-               echo "<a class='navbar-brand' href='#home'>Simpic</a>";
+               echo "<a class='navbar-brand' href='index.php'>Simpic</a>";
             }
          ?> 
           
@@ -50,7 +50,7 @@ session_start();
               <ul class="dropdown-menu">
                 <li class=""><a data-toggle="tab" href="#popular">Popular</a></li>
                 <!-- <li><a href="#current">Current</a></li> -->
-                <li class=""><a data-toggle="tab" href="#topComments">Top Comments</a></li>
+                <li class=""><a data-toggle="tab" href="#mostCommented">Most Commented</a></li>
               </ul>
             </li>
             <li><a data-toggle="collapse" data-target="#search" href="#">Search</a></li>
@@ -107,20 +107,8 @@ session_start();
     
 <div class="tab-content">
    <div class="tab-pane active" id="home">
-     <p>Home!!</p>
-   </div>
-   <div class="tab-pane" id="people">
-     <p>Most Recently Created Profiles</p>
-   </div>
-   <div class="tab-pane" id="popular">
-     <p>Popular Images!!</p>
-   </div>
-   <div class="tab-pane" id="topComments">
-     <p>Top Comments!!</p>
-   </div>
-</div>
-    
-    <div class="container">
+     
+         <div class="container">
 
     <?php
        $con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
@@ -129,7 +117,7 @@ session_start();
          echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
        }
 
-       $query = "SELECT * FROM user_images ORDER BY upload_time DESC LIMIT 9;";
+       $query = "SELECT * FROM user_images ORDER BY upload_time DESC LIMIT 9";
 
        if (!mysqli_query($con, $query)) {
          die('Error: ' . mysqli_error($con));
@@ -148,7 +136,270 @@ session_start();
        mysqli_close($con);
     ?>
     </div> <!-- /container -->    
+     
+     
+   </div>
+   <div class="tab-pane" id="people">
+     
+   <div class="container">
+     <?php
+       $con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
+       
+       if (mysqli_connect_errno()) {
+         echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
+       }
+
+       $query = "SELECT * FROM users ORDER BY registration_date DESC LIMIT 9";
+
+       if (!mysqli_query($con, $query)) {
+         die('Error: ' . mysqli_error($con));
+       }
+
+       if ($result = mysqli_query($con, $query)) {
+         while ($row = $result->fetch_array()) {
+            $username = $row['username'];
+            echo "<a href='#'><div class='thumbnail'><div class='caption-btm'><p>$username</p></div><img src='$row[profile_photo]' class='img-thumbnail' alt='Responsive image'/></div></a>";
+         }
+       }
+
+       mysqli_close($con);
+    ?>
+    </div> <!-- /container -->
+         
+     
+   </div>
+   <div class="tab-pane" id="popular">
+   
+   <div class="container">
+
+    <?php
+       $con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
+       
+       if (mysqli_connect_errno()) {
+         echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
+       }
+
+       $query = "SELECT * FROM user_images ORDER BY hearts DESC LIMIT 9";
+
+       if (!mysqli_query($con, $query)) {
+         die('Error: ' . mysqli_error($con));
+       }
+
+       if ($result = mysqli_query($con, $query)) {
+         while ($row = $result->fetch_array()) {
+            $picture = $row['filename'];
+            $heartCount = $row['hearts'];
+            echo "<a href='#'><div class='thumbnail'><div class='caption-btm'><p><span class='label label-danger'>$heartCount <span class='glyphicon glyphicon-heart'></span></span></p></div><img src='$picture' class='img-thumbnail' alt='Responsive image'/></div></a>";
+         }
+       }
+
+       mysqli_close($con);
+    ?>
+    </div> <!-- /container -->    
+   
+     
+   </div>
+   <div class="tab-pane" id="mostCommented">
+     
+          
+   </div>
+   
+   <div class="tab-pane" id="contactUs">
+   
+      <div class="container">
+		<center><font size="10">Contact Us</font><br></center>
+		Simpic is a simple photo sharer which user's can easily upload, discover and rate photos.
+		orem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod 
+		tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, 
+		quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo 
+		consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie 
+		consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto 
+		odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait 
+		nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet 
+		doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; 
+		est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt 
+		lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, 
+		qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, 
+		quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula 
+		quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, 
+		fiant sollemnes in futurum.
+      </div> <!-- /container -->
+   
+   </div>
+   
+   <div class="tab-pane" id="FAQ">
+   
+       <div class="container">
+		<center><font size="10">Simpic FAQ</font></center>	
+		<!-- Faq Questions -->
+		<div class="container-fluid">
+			<div class="accordion" id="accordion2">
+				
+				<!-- FAQ #1 - What is Simpic -->
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+							<font size="5">What is Simpic?</font> (Click to expand)
+						</a>
+					</div>
+					<div id="collapseOne" class="accordion-body collapse" style="height: 0px; ">
+						<div class="accordion-inner">
+							Simpic is a photo sharing site which is AWESOMEEE. blah blah blah blah
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod 
+							tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit 
+							amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
+							labore et dolore magna aliqua.
+						</div>
+					</div>
+				</div>
+				
+				<!-- FAQ #2 How do you pronounce Simpic? -->
+				<div class="accordion-group">
+				  <div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+					 <font size="5">How do you pronounce Simpic?</font> (Click me to expand)
+					</a>
+				  </div>
+				  <div id="collapseTwo" class="accordion-body collapse">
+					<div class="accordion-inner">
+					 Simpic is pronounced as "Sim-Pick". It is short for Simple Picture. This name was inspired
+					 by 
+					</div>
+				  </div>
+				</div>
+				
+				<!-- FAQ #3 How many images can I upload? -->
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+							<font size="5">How many images can I upload?</font> (Click me to expand)
+						</a>
+					</div>
+					<div id="collapseThree" class="accordion-body collapse">
+						<div class="accordion-inner">
+						Your account comes with 5GB of free space. YOU CAN DOWNLOAD TONNSNSSSNSNN!!!!1111one
+						</div>
+					</div>
+				</div>
+				
+				<!-- FAQ #4 Can I delete an image after I upload it? -->
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
+						<font size="5">Can I delete an image after I upload it?</font> (Click me to expand)
+						</a>
+					</div>
+					<div id="collapseFour" class="accordion-body collapse">
+						<div class="accordion-inner">
+						Yes, when viewing your image, there is a "delete button" at the top of the screen which prompts to
+						delete the image. You can either cancel or confirm the deletion. Lorem ipsum dolor sit amet, 
+						consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
+						labore et dolore magna aliqua.
+						</div>
+					</div>
+				</div>
+				
+				<!-- FAQ #5 What file types are allowed? -->
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
+						<font size="5">What file types are allowed?</font> (Click me to expand)
+						</a>
+					</div>
+					<div id="collapseFive" class="accordion-body collapse">
+						<div class="accordion-inner">
+							Jpeg, gif and png are allowed! Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+							sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit 
+							amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+							magna aliqua.
+						</div>
+					</div>
+				</div
+				
+				<!-- FAQ #6 The image quality is worse after I uploaded my image! -->
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSix">
+						<font size="5">	The image quality is worse after I uploaded my image!</font> (Click me to expand)
+						</a>
+					</div>
+					<div id="collapseSix" class="accordion-body collapse">
+						<div class="accordion-inner">
+							Too bad, yo. 
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+    </div> <!-- /container -->	
+
+   
+   </div>
+   
+   <div class="tab-pane" id="about">
+   
+   <div class="container">
+		<center><font size="10">About Simpic</font><br>
+		Simpic is a simple photo sharer which user's can easily upload, discover and rate photos.<br> 
+		We are awesome, beautiful people. check it out!<br>
+		<img src="./assets/img/static/daniel.jpg" width="200" height="200" class="img-circle" alt="Responsive image">
+		<img src="./assets/img/static/amber.jpg" width="200" height="200" class="img-circle" alt="Responsive image"><br>
+		<img src="./assets/img/static/michael.jpg"  width="200" height="200" class="img-circle" alt="Responsive image">
+		<img src="./assets/img/static/sokhun.jpg" width="200" height="200" class="img-circle" alt="Responsive image">
+		<img src="./assets/img/static/kevin.jpg" width="200" height="200" class="img-circle" alt="Responsive image"><br></center>
+		&nbsp;&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy
+		tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, 
+		quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo 
+		consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie 
+		consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto 
+		odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait 
+		nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet 
+		doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; 
+		est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt 
+		lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, 
+		qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, 
+		quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula 
+		quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, 
+		fiant sollemnes in futurum.
+    </div> <!-- /container -->
+
+   
+   </div>
+   
+      <div class="tab-pane" id="copyright">
+   
+   <div class="container">
+		<center><font size="10">Copyright Notice</font><br></center>
+	By uploading a file or other content or by making a comment, you represent and warrant
+	to us that (1) doing so does not violate or infringe anyone else’s rights; and (2) you 
+	created the file or other content you are uploading, or otherwise have sufficient 
+	intellectual property rights to upload the material consistent with these terms. With 
+	regard to any file or content you upload to the public portions of our site, you grant 
+	Simpic a non-exclusive, royalty- free, perpetual, irrevocable worldwide license (with 
+	sublicense and assignment rights) to use, to display online and in any present or future 
+	media, to create derivative works of, to allow downloads of, and/or distribute any such 
+	file or content. To the extent that you delete a such file or content from the public 
+	portions of our site, the license you grant to Simpic pursuant to the preceding sentence 
+	will automatically terminate, but will not be revoked with respect to any file or content 
+	Simpic has already copied and sublicensed or designated for sublicense. Also, of course, 
+	anything you post to a public portion of our site may be used by the public pursuant to 
+	the following paragraph even after you delete it. 
+
+	By downloading a file or other content from the Simpic site, you agree that you will not use
+	such file or other content except for personal, non-commercial purposes, and you may not claim
+	any rights to such file or other content, except to the extent otherwise specifically provided
+	in writing. 
+    </div> <!-- /container -->
+
+   
+   </div>
+   
+   
+</div>
     
+        
     <!-- Static bottom navbar -->
     <div class="navbar navbar-default navbar-fixed-bottom">
       <div class="container">
@@ -157,10 +408,10 @@ session_start();
         </div>
         <div class="navbar-collapse collapse bottom-collapse"> <!-- NOTE! The extra bottom-collapse class put on here -->
           <ul class="nav navbar-nav">
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#about">FAQ</a></li>
-            <li><a href="#contact">About Us</a></li>
-            <li><a href="#contact">Copyright</a></li>
+            <li class=""><a data-toggle="tab" href="#contactUs">Contact Us</a></li>
+            <li class=""><a data-toggle="tab" href="#FAQ">FAQ</a></li>
+            <li class=""><a data-toggle="tab" href="#about">About</a></li>
+            <li class=""><a data-toggle="tab" href="#copyright">Copyright</a></li>
           </ul>
         </div> <!-- /.nav-collapse -->
       </div>
