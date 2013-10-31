@@ -98,16 +98,18 @@ session_start();
     </div><!-- /.alert-info -->
    </div>
 
-    <div class="jumbotron">
+    
+<div class="tab-content">
+   <div class="tab-pane active" id="home">
+   
+   <div class="jumbotron">
       <div class="container">
          <img src="./assets/img/static/Logo.png" class="img-responsive" alt="Responsive image">
       </div> <!-- /container -->
     </div>
-    
-<div class="tab-content">
-   <div class="tab-pane active" id="home">
+   
      
-         <div class="container">
+   <div class="container">
 
     <?php
        $con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
@@ -140,7 +142,7 @@ session_start();
    </div>
    <div class="tab-pane" id="people">
      
-   <div class="container">
+   <div class="container" style="margin-top:100px;">
      <?php
        $con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
        
@@ -169,7 +171,7 @@ session_start();
    </div>
    <div class="tab-pane" id="popular">
    
-   <div class="container">
+   <div class="container" style="margin-top:100px;">
 
     <?php
        $con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
@@ -200,36 +202,50 @@ session_start();
    </div>
    <div class="tab-pane" id="mostCommented">
      
+   <div class="container" style="margin-top:100px;">
+
+    <?php
+       $con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
+       
+       if (mysqli_connect_errno()) {
+         echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
+       }
+
+       $query = "SELECT * FROM user_images ORDER BY hearts DESC LIMIT 9";
+
+       if (!mysqli_query($con, $query)) {
+         die('Error: ' . mysqli_error($con));
+       }
+
+       if ($result = mysqli_query($con, $query)) {
+         while ($row = $result->fetch_array()) {
+            $picture = $row['filename'];
+            $heartCount = $row['hearts'];
+            echo "<a href='#'><div class='thumbnail'><div class='caption-btm'><p><span class='label label-danger'>$heartCount <span class='glyphicon glyphicon-heart'></span></span></p></div><img src='$picture' class='img-thumbnail' alt='Responsive image'/></div></a>";
+         }
+       }
+
+       mysqli_close($con);
+    ?>
+    </div> <!-- /container -->  
+     
+     
           
    </div>
    
-   <div class="tab-pane" id="contactUs">
+   <div class="tab-pane" id="about" style="margin-top:100px;">
    
       <div class="container">
-		<center><font size="10">Contact Us</font><br></center>
-		Simpic is a simple photo sharer which user's can easily upload, discover and rate photos.
-		orem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod 
-		tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, 
-		quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo 
-		consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie 
-		consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto 
-		odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait 
-		nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet 
-		doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; 
-		est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt 
-		lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, 
-		qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, 
-		quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula 
-		quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, 
-		fiant sollemnes in futurum.
+		<center><h2>About Us</h2></center><br>
+		<p>The main goal of Simpic is to provide a seamless, easy-to-use, interactive and enjoyable image sharing experience to all users. Since we want our audience to consist of young and old, those familiar and those unfamiliar with computers, our aim is to provide a tool that engages users to continue using our service regularly. Through our own individual studies, increasingly advanced camera technology is pushing individuals to share moments with their family and friends. People are starting to take pride in their pictures and express their creativity through their digital camera roll. </p>
       </div> <!-- /container -->
    
    </div>
    
-   <div class="tab-pane" id="FAQ">
+   <div class="tab-pane" id="FAQ" style="margin-top:100px;">
    
        <div class="container">
-		<center><font size="10">Simpic FAQ</font></center>	
+		<center><h2>Simpic FAQ</h2></center><br>	
 		<!-- Faq Questions -->
 		<div class="container-fluid">
 			<div class="accordion" id="accordion2">
@@ -238,16 +254,12 @@ session_start();
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-							<font size="5">What is Simpic?</font> (Click to expand)
+							<h4>What is Simpic? (Click to expand)</h4>
 						</a>
 					</div>
 					<div id="collapseOne" class="accordion-body collapse" style="height: 0px; ">
 						<div class="accordion-inner">
-							Simpic is a photo sharing site which is AWESOMEEE. blah blah blah blah
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod 
-							tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit 
-							amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
-							labore et dolore magna aliqua.
+							<p>Simpic is a photo sharing site which is AWESOMEEE. The main goal of Simpic is to provide a seamless, easy-to-use, interactive and enjoyable image sharing experience to all users. Since we want our audience to consist of young and old, those familiar and those unfamiliar with computers, our aim is to provide a tool that engages users to continue using our service regularly.</p><br>
 						</div>
 					</div>
 				</div>
@@ -256,13 +268,13 @@ session_start();
 				<div class="accordion-group">
 				  <div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-					 <font size="5">How do you pronounce Simpic?</font> (Click me to expand)
+					 <h4>How do you pronounce Simpic? (Click me to expand)</h4>
 					</a>
 				  </div>
 				  <div id="collapseTwo" class="accordion-body collapse">
 					<div class="accordion-inner">
-					 Simpic is pronounced as "Sim-Pick". It is short for Simple Picture. This name was inspired
-					 by 
+					 <p>Simpic is pronounced as "Sim-Pick". It is short for Simple Picture. This name was created during an inspirational episode experienced by Amber while being sleep deprived for 20+ hours.
+					 by </p><br>
 					</div>
 				  </div>
 				</div>
@@ -271,12 +283,12 @@ session_start();
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-							<font size="5">How many images can I upload?</font> (Click me to expand)
+							<h4>How many images can I upload? (Click me to expand)</h4>
 						</a>
 					</div>
 					<div id="collapseThree" class="accordion-body collapse">
 						<div class="accordion-inner">
-						Your account comes with 5GB of free space. YOU CAN DOWNLOAD TONNSNSSSNSNN!!!!1111one
+						<p>Your account comes with 5GB of free space. YOU CAN DOWNLOAD TONSSSS!!!!1111one</p><br>
 						</div>
 					</div>
 				</div>
@@ -285,16 +297,13 @@ session_start();
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
-						<font size="5">Can I delete an image after I upload it?</font> (Click me to expand)
+						<h4>Can I delete an image after I upload it? (Click me to expand)</h4>
 						</a>
 					</div>
 					<div id="collapseFour" class="accordion-body collapse">
 						<div class="accordion-inner">
-						Yes, when viewing your image, there is a "delete button" at the top of the screen which prompts to
-						delete the image. You can either cancel or confirm the deletion. Lorem ipsum dolor sit amet, 
-						consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
-						labore et dolore magna aliqua.
+						<p>Yes, when viewing your image, there is a "delete button" at the top of the screen which prompts to
+						delete the image.</p><br>
 						</div>
 					</div>
 				</div>
@@ -303,15 +312,12 @@ session_start();
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
-						<font size="5">What file types are allowed?</font> (Click me to expand)
+						<h4>What file types are allowed? (Click me to expand)</h4>
 						</a>
 					</div>
 					<div id="collapseFive" class="accordion-body collapse">
 						<div class="accordion-inner">
-							Jpeg, gif and png are allowed! Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
-							sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit 
-							amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
-							magna aliqua.
+							<p>Jpeg, gif and png are allowed. We plan on expanding and utilizing other file types but we are still in our beta period. Please feel free to contact us to provide feedback. Talk to us around school and let us know what other file types you would like to see! In the future, we are possibly considering adding video and other multimedia types. Stay tuned.</p><br>
 						</div>
 					</div>
 				</div
@@ -320,12 +326,12 @@ session_start();
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSix">
-						<font size="5">	The image quality is worse after I uploaded my image!</font> (Click me to expand)
+						<h4>The image quality is worse after I uploaded my image! (Click me to expand)</h4>
 						</a>
 					</div>
 					<div id="collapseSix" class="accordion-body collapse">
 						<div class="accordion-inner">
-							Too bad, yo. 
+							<p>Too bad, yo.</p><br>
 						</div>
 					</div>
 				</div>
@@ -337,46 +343,37 @@ session_start();
    
    </div>
    
-   <div class="tab-pane" id="about">
+   <div class="tab-pane" id="contactUs" style="margin-top:100px;">
    
    <div class="container">
-		<center><font size="10">About Simpic</font><br>
-		Simpic is a simple photo sharer which user's can easily upload, discover and rate photos.<br> 
-		We are awesome, beautiful people. check it out!<br>
-		<img src="./assets/img/static/daniel.jpg" width="200" height="200" class="img-circle" alt="Responsive image">
-		<img src="./assets/img/static/amber.jpg" width="200" height="200" class="img-circle" alt="Responsive image"><br>
-		<img src="./assets/img/static/michael.jpg"  width="200" height="200" class="img-circle" alt="Responsive image">
-		<img src="./assets/img/static/sokhun.jpg" width="200" height="200" class="img-circle" alt="Responsive image">
-		<img src="./assets/img/static/kevin.jpg" width="200" height="200" class="img-circle" alt="Responsive image"><br></center>
-		&nbsp;&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy
-		tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, 
-		quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo 
-		consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie 
-		consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto 
-		odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait 
-		nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet 
-		doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; 
-		est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt 
-		lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, 
-		qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, 
-		quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula 
-		quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, 
-		fiant sollemnes in futurum.
+		<center><h2>Contact Us</h2></center><br><br>
+		
+		<center><a href="mailto:danielm8587@gmail.com"><img src="./assets/img/static/daniel.jpg" width="200" height="200" class="img-circle" alt="Responsive image"></a>
+		<a href="mailto:ambertx09@gmail.com"><img src="./assets/img/static/amber.jpg" width="200" height="200" class="img-circle" alt="Responsive image"></a>
+		<a href="mailto:mmendoza27@satx.rr.com"><img src="./assets/img/static/michael.jpg"  width="200" height="200" class="img-circle" alt="Responsive image"></a>
+		<a href="mailto:sososeng@gmail.com"><img src="./assets/img/static/sokhun.jpg" width="200" height="200" class="img-circle" alt="Responsive image"></a>
+		<a href="mailto:kvela415@gmail.com"><img src="./assets/img/static/kevin.jpg" width="200" height="200" class="img-circle" alt="Responsive image"></a></center><br><br>
+		
+		<p>All of us are currently enrolled at Computer Science students at the University of Texas at San Antonio.
+   		We are currently taking security, programming theory and user interface courses. Our hope is that you enjoy
+   		this website and use it to it's full advantage. Please feel free to click on our images to send us an email
+   		and let us know what you think of the website. We appreciate your feedback.
+		</p>
     </div> <!-- /container -->
 
    
    </div>
    
-      <div class="tab-pane" id="copyright">
+      <div class="tab-pane" id="copyright" style="margin-top:100px;">
    
    <div class="container">
-		<center><font size="10">Copyright Notice</font><br></center>
-	By uploading a file or other content or by making a comment, you represent and warrant
+		<center><h2>Copyright</h2></center><br>
+	<p>By uploading a file or other content or by making a comment, you represent and warrant
 	to us that (1) doing so does not violate or infringe anyone else’s rights; and (2) you 
 	created the file or other content you are uploading, or otherwise have sufficient 
 	intellectual property rights to upload the material consistent with these terms. With 
 	regard to any file or content you upload to the public portions of our site, you grant 
-	Simpic a non-exclusive, royalty- free, perpetual, irrevocable worldwide license (with 
+	Simpic a non-exclusive, royalty-free, perpetual, irrevocable worldwide license (with 
 	sublicense and assignment rights) to use, to display online and in any present or future 
 	media, to create derivative works of, to allow downloads of, and/or distribute any such 
 	file or content. To the extent that you delete a such file or content from the public 
@@ -389,7 +386,7 @@ session_start();
 	By downloading a file or other content from the Simpic site, you agree that you will not use
 	such file or other content except for personal, non-commercial purposes, and you may not claim
 	any rights to such file or other content, except to the extent otherwise specifically provided
-	in writing. 
+	in writing.</p>
     </div> <!-- /container -->
 
    
