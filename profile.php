@@ -1,5 +1,30 @@
 <?php
 session_start();
+
+$userID= $_GET["id"];
+
+$con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
+
+if (mysqli_connect_errno()) {
+        echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
+}
+
+$query = "SELECT * FROM users WHERE id=$userID";
+
+if ($result = mysqli_query($con, $query)) {
+        $userData = mysqli_fetch_array($result);
+}
+
+$picture = $userData["profile_photo"];
+$firstName = $userData["first_name"];
+$lastName = $userData["last_name"];
+$emailAddress = $userData["email"];
+$userName = $userData["username"];
+$joinDate = $userData["registration_date"];
+$joinDateMonthYear = date('F Y', strtotime($joinDate));
+
+mysqli_close($con);
+
 ?>
 
 <!DOCTYPE html>
@@ -18,38 +43,6 @@ session_start();
 
     <!-- Custom styles for this template -->
     <link href="./assets/css/navbar-static-top.css" rel="stylesheet">
-
-
-   <script>
-      $(document).ready(function () {
-      
-          $('#registration').validate({
-              rules: {
-                  inputFirstName1: {
-                      minlength: 2,
-                      required: true
-                  },
-                  email: {
-                      required: true,
-                      email: true
-                  },
-                  message: {
-                      minlength: 2,
-                      required: true
-                  }
-              },
-              highlight: function (element) {
-                  $(element).closest('.control-group').removeClass('success').addClass('error');
-              },
-              success: function (element) {
-                  element.text('OK!').addClass('valid')
-                      .closest('.control-group').removeClass('error').addClass('success');
-              }
-          });
-      
-      });
-   </script>
-
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -134,13 +127,13 @@ session_start();
 <div class="tab-content">
    <div class="tab-pane active" id="home">
    
-   <div class="jumbotron">
-      <div class="container">
-         <img src="./assets/img/static/Logo.png" class="img-responsive" alt="Responsive image">
-      </div> <!-- /container -->
-    </div>
    
+<?php
+   echo "<div class='jumbotron'><div class='container'><img src='$picture' class='img-circle' width='275' height='275' alt='Responsive image'><div style='display: inline-block; margin-left: 40px;'><h1>$firstName $lastName</h1>
+   <h2> $userName </h2><h4>Member since $joinDateMonthYear</h4></div></div></div>";
+?>
      
+   
    <div class="container">
 
     <?php
@@ -150,7 +143,7 @@ session_start();
          echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
        }
 
-       $query = "SELECT * FROM user_images ORDER BY upload_time DESC LIMIT 9";
+       $query = "SELECT * FROM user_images WHERE user_id = $userID LIMIT 9";
 
        if (!mysqli_query($con, $query)) {
          die('Error: ' . mysqli_error($con));
@@ -169,7 +162,6 @@ session_start();
        mysqli_close($con);
     ?>
     </div> <!-- /container -->    
-     
      
    </div>
    
@@ -236,6 +228,7 @@ session_start();
    
      
    </div>
+   
    <div class="tab-pane" id="mostCommented">
      
    <div class="container" style="margin-top:100px;">
