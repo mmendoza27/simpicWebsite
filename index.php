@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$alert_type = NULL;
+$alert_type = null;
 
 if(isset($_SESSION['alert_type'])){
    $photoID = $_SESSION['photo_id'];
@@ -91,11 +91,11 @@ if(isset($_SESSION['alert_type'])){
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Images <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li class=""><a data-toggle="tab" href="#popular">Popular</a></li>
-                <li class=""><a data-toggle="tab" href="#all">All</a></li>
+                <li class=""><a href="./img_viewer.php">All</a></li>
                 <li class=""><a data-toggle="tab" href="#mostCommented">Most Commented</a></li>
               </ul>
             </li>
-            <li><a data-toggle="collapse" data-target="#search" href="#">Search</a></li>
+            <li><a data-toggle="collapse" data-target="#search" href="#searchResults">Search</a></li>
             
             <?php
                   if (isset($_SESSION['userID']) && isset($_COOKIE['LoginCredentials'])) {
@@ -161,23 +161,146 @@ if(isset($_SESSION['alert_type'])){
          echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
        }
 
-       $query = "SELECT * FROM user_images ORDER BY upload_time DESC LIMIT 9";
-
-       if (!mysqli_query($con, $query)) {
-         die('Error: ' . mysqli_error($con));
-       }
-
-       if ($result = mysqli_query($con, $query)) {
-         while ($row = $result->fetch_array()) {
-            $picture = $row['filename'];
-            $tag1 = "#" . $row['tag1'];
-            $tag2 = "#" . $row['tag2'];
-            $tag3 = "#" . $row['tag3'];
-            echo "<a href='#'><div class='thumbnail'><div class='caption-btm'><p><span class='label label-primary'>$tag1</span> <span class='label label-primary'>$tag2</span> <span class='label label-primary'>$tag3</span></p></div><img src='$picture' class='img-thumbnail' alt='Responsive image'/></div></a>";
-         }
-       }
+		//Query user and user_images for image information 
+		$imageqry = "SELECT * FROM user_images i, users u WHERE u.id = i.user_id ORDER BY upload_time DESC LIMIT 9";
+		//Prints 9 images and creates 9 modals filled with image information.
+		if ($result = mysqli_query($con, $imageqry)) {
+			while ($row = $result->fetch_array()) {
+				$userID = $row["user_id"];
+				$username = $row["username"];
+				$photoID = $row["photo_id"];
+				$UserImage = $row["filename"];
+				$ProfilePhoto = $row["profile_photo"];
+				$tag1 = $row["tag1"];
+				$tag2 = $row["tag2"];
+				$tag3 = $row["tag3"];
+				$hearts = $row["hearts"];
+				
+				echo "<a href='#imgView$photoID' role='button' data-toggle='modal'><div class='thumbnail'><div class='caption-btm'><p><span class='label label-primary'>$tag1</span> <span class='label label-primary'>$tag2</span> <span class='label label-primary'>$tag3</span></p></div><img src='$UserImage' height= '275' width='350' class='img-thumbnail' alt='Responsive image'></div></a>";
+				
+				//modal
+				echo "<div id='imgView$photoID' class='modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
+				echo "<div class='modal-dialog'>
+						<div class='modal-content'>
+						   <div class='modal-header'>
+								<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>
+								<div class='media'>
+								<a class='pull-left'>";
+				echo "          	<img class='img-circle' src='$ProfilePhoto' alt='64x64' style='width: 68px; height: 68px;'>";
+				echo "          </a>
+								<div class='media-body'>";
+				echo "				<h4 class='user-name'>$username</h4>";
+				
+				//   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion'>
+				
+				echo " 			</div>
+						  </div>
+					   </div> <!-- /.modal-header -->
+					   <div class='modal-body' style='height: 615px';>
+						  <div class='top-menu' style='width: 534px;'>
+						  <div class='media-options' style='position:absolute;'>
+								<div class='panel panel-default'>
+							 <div class='panel-group' id='accordian'>
+								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseCList$photoID'><button class='btn'><span class='glyphicon glyphicon-list'></span></button></a>
+								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseComment$photoID'><button class='btn'><span class='glyphicon glyphicon-comment'></span></button></a>
+								</div><!-- //top-panel -->
+								<div>
+								   <div id='collapseCList$photoID' class='panel-collapse collapse' style='background:white;'>
+									  <div class='comments' style='width: 534px; height: 434px; overflow:scroll;'>
+										 <table class='table'>
+											<thead>
+											   <tr>
+												  <th>Comment</th>
+												  <th>Username</th>
+												  <th>Options</th>
+											   </tr>
+											</thead>
+											<tbody>";
+											
+											//query for comments
+											$commentqry = "SELECT * FROM comments WHERE pid = '$photoID'";
+											if ($CommentRow = mysqli_query($con, $commentqry)) {
+												while ($C_row = mysqli_fetch_array($CommentRow)) {
+														$comment = $C_row["comment"];
+														$c_username = $C_row["c_username"];
+														$cid = $C_row["cid"];
+														
+														echo "<tr>
+																<td>$comment</td>
+																<td>$c_username</td>";
+														if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
+															echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
+																	<input type='hidden' name='cid' value='$cid'>
+																	<input type='hidden' name='photo_id' value='$photoID'>
+																	<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
+																	</form>";
+														}else{
+															echo" <td></td>";
+														}
+														echo"</tr> ";
+												}
+											}
+										echo "</tbody>
+										 </table>
+									  </div>
+								   </div>
+								   <div id='collapseComment$photoID' class='panel-collapse collapse' style='background:white;'>
+									  <div class='comment-body'>
+										<form name='commentForm$photoID' action='add_comment.php' class='form-horizontal' role='form' method='post'>		
+											<input type='hidden' name='photo_id' id='photo_id' value ='$photoID'> 
+											<div class='make-comment' style='width: 534px; height: 120px;'>
+												<div class='comment-box'>
+													<textarea type='text' name='user_comment' id='user_comment' class='form-control' rows='3' placeholder='140 Characters Max'></textarea>
+												</div>
+												<div class='sub-comment' style='margin-top:10px;'>
+													<button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</button>
+													<button type='submit' class='btn btn-success'>Submit</button>
+												</div>
+											</div>
+										 </form>
+									  </div> <!-- comment-body -->
+								   </div><!-- collapse-comment -->
+								</div><!-- collapse-panels --> 
+							 </div><!-- panel-group -->
+							 
+						  </div> <!-- media-options -->";
+						  /*<div class='media-options2'>
+							<form name='rating' action='hearts.php' role= 'form' method='post'> 
+										<input type='hidden' name='photo_id' value='$photoID'>
+										<button class='btn' type='submit'><span class='glyphicon glyphicon-heart'></span><span class='badge'>$hearts</span></button>
+							</form>
+							</div> <!-- //media-options2 -->*/
+							
+						echo"	</div> <!-- //top-menu -->
+						  <div class='media'>";
+				echo "		<img class='media-object' src='$UserImage' alt='' style='width: 534px; height: 534px;'>";
+				echo "	  </div><!-- //media end -->
+						  <div class='media-info'>
+							 <div class='tags'  style='width: 470px; float: left;'>
+								<span class='glyphicon glyphicon-tag'></span>
+								$tag1, $tag2, $tag3
+							 </div>
+							
+							<div class='current-hearts' style='float: right;'>
+								<form name='rating' action='hearts.php' role= 'form' method='post'> 
+										<input type='hidden' name='photo_id' value='$photoID'>
+										<button class='btn' type='submit'><span class='glyphicon glyphicon-heart'></span><span class='badge'>$hearts</span></button>
+								</form>
+							</div>
+							
+							</div><!-- //media-info -->
+					   </div> <!-- /.modal-body -->           
+					   <div class='modal-footer' style='margin-top:10px;'>
+						  <button class='btn btn-danger' data-dismiss='modal'>Close</button>
+					   </div><!-- /.modal-footer -->
+					</div><!-- /.modal-content -->
+				 </div><!-- /.modal-dialog -->
+			  </div><!-- /.modal -->";
+			}
+		}
 
        mysqli_close($con);
+
     ?>
     </div> <!-- /container -->    
      
@@ -227,19 +350,143 @@ if(isset($_SESSION['alert_type'])){
          echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
        }
 
-       $query = "SELECT * FROM user_images ORDER BY hearts DESC LIMIT 9";
-
-       if (!mysqli_query($con, $query)) {
-         die('Error: ' . mysqli_error($con));
-       }
-
-       if ($result = mysqli_query($con, $query)) {
-         while ($row = $result->fetch_array()) {
-            $picture = $row['filename'];
-            $heartCount = $row['hearts'];
-            echo "<a href='#'><div class='thumbnail'><div class='caption-btm'><p><span class='label label-danger'>$heartCount <span class='glyphicon glyphicon-heart'></span></span></p></div><img src='$picture' class='img-thumbnail' alt='Responsive image'/></div></a>";
-         }
-       }
+		//Query user and user_images for image information 
+		$imageqry = "SELECT * FROM user_images i, users u WHERE u.id = i.user_id ORDER BY hearts DESC LIMIT 9";
+		//Prints 9 images and creates 9 modals filled with image information.
+		if ($result = mysqli_query($con, $imageqry)) {
+			while ($row = $result->fetch_array()) {
+				$userID = $row["user_id"];
+				$username = $row["username"];
+				$photoID = $row["photo_id"];
+				$UserImage = $row["filename"];
+				$ProfilePhoto = $row["profile_photo"];
+				$tag1 = $row["tag1"];
+				$tag2 = $row["tag2"];
+				$tag3 = $row["tag3"];
+				$hearts = $row["hearts"];
+				
+				echo "<a href='#imgView$photoID' role='button' data-toggle='modal'><div class='thumbnail'><div class='caption-btm'><p><span class='label label-danger'>$hearts <span class='glyphicon glyphicon-heart'></span></span></p></div><img src='$UserImage' height= '275' width='350' class='img-thumbnail' alt='Responsive image'></div></a>";
+				
+				//modal
+				echo "<div id='imgView$photoID' class='modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
+				echo "<div class='modal-dialog'>
+						<div class='modal-content'>
+						   <div class='modal-header'>
+								<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>
+								<div class='media'>
+								<a class='pull-left'>";
+				echo "          	<img class='img-circle' src='$ProfilePhoto' alt='64x64' style='width: 68px; height: 68px;'>";
+				echo "          </a>
+								<div class='media-body'>";
+				echo "				<h4 class='user-name'>$username</h4>";
+				
+				//   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion'>
+				
+				echo " 			</div>
+						  </div>
+					   </div> <!-- /.modal-header -->
+					   <div class='modal-body' style='height: 615px';>
+						  <div class='top-menu' style='width: 534px;'>
+						  <div class='media-options' style='position:absolute;'>
+								<div class='panel panel-default'>
+							 <div class='panel-group' id='accordian'>
+								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseCList$photoID'><button class='btn'><span class='glyphicon glyphicon-list'></span></button></a>
+								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseComment$photoID'><button class='btn'><span class='glyphicon glyphicon-comment'></span></button></a>
+								</div><!-- //top-panel -->
+								<div>
+								   <div id='collapseCList$photoID' class='panel-collapse collapse' style='background:white;'>
+									  <div class='comments' style='width: 534px; height: 434px; overflow:scroll;'>
+										 <table class='table'>
+											<thead>
+											   <tr>
+												  <th>Comment</th>
+												  <th>Username</th>
+												  <th>Options</th>
+											   </tr>
+											</thead>
+											<tbody>";
+											
+											//query for comments
+											$commentqry = "SELECT * FROM comments WHERE pid = '$photoID'";
+											if ($CommentRow = mysqli_query($con, $commentqry)) {
+												while ($C_row = mysqli_fetch_array($CommentRow)) {
+														$comment = $C_row["comment"];
+														$c_username = $C_row["c_username"];
+														$cid = $C_row["cid"];
+														
+														echo "<tr>
+																<td>$comment</td>
+																<td>$c_username</td>";
+														if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
+															echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
+																	<input type='hidden' name='cid' value='$cid'>
+																	<input type='hidden' name='photo_id' value='$photoID'>
+																	<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
+																	</form>";
+														}else{
+															echo" <td></td>";
+														}
+														echo"</tr> ";
+												}
+											}
+										echo "</tbody>
+										 </table>
+									  </div>
+								   </div>
+								   <div id='collapseComment$photoID' class='panel-collapse collapse' style='background:white;'>
+									  <div class='comment-body'>
+										<form name='commentForm$photoID' action='add_comment.php' class='form-horizontal' role='form' method='post'>		
+											<input type='hidden' name='photo_id' id='photo_id' value ='$photoID'> 
+											<div class='make-comment' style='width: 534px; height: 120px;'>
+												<div class='comment-box'>
+													<textarea type='text' name='user_comment' id='user_comment' class='form-control' rows='3' placeholder='140 Characters Max'></textarea>
+												</div>
+												<div class='sub-comment' style='margin-top:10px;'>
+													<button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</button>
+													<button type='submit' class='btn btn-success'>Submit</button>
+												</div>
+											</div>
+										 </form>
+									  </div> <!-- comment-body -->
+								   </div><!-- collapse-comment -->
+								</div><!-- collapse-panels --> 
+							 </div><!-- panel-group -->
+							 
+						  </div> <!-- media-options -->";
+						  /*<div class='media-options2'>
+							<form name='rating' action='hearts.php' role= 'form' method='post'> 
+										<input type='hidden' name='photo_id' value='$photoID'>
+										<button class='btn' type='submit'><span class='glyphicon glyphicon-heart'></span><span class='badge'>$hearts</span></button>
+							</form>
+							</div> <!-- //media-options2 -->*/
+							
+						echo"	</div> <!-- //top-menu -->
+						  <div class='media'>";
+				echo "		<img class='media-object' src='$UserImage' alt='' style='width: 534px; height: 534px;'>";
+				echo "	  </div><!-- //media end -->
+						  <div class='media-info'>
+							 <div class='tags'  style='width: 470px; float: left;'>
+								<span class='glyphicon glyphicon-tag'></span>
+								$tag1, $tag2, $tag3
+							 </div>
+							
+							<div class='current-hearts' style='float: right;'>
+								<form name='rating' action='hearts.php' role= 'form' method='post'> 
+										<input type='hidden' name='photo_id' value='$photoID'>
+										<button class='btn' type='submit'><span class='glyphicon glyphicon-heart'></span><span class='badge'>$hearts</span></button>
+								</form>
+							</div>
+							
+							</div><!-- //media-info -->
+					   </div> <!-- /.modal-body -->           
+					   <div class='modal-footer' style='margin-top:10px;'>
+						  <button class='btn btn-danger' data-dismiss='modal'>Close</button>
+					   </div><!-- /.modal-footer -->
+					</div><!-- /.modal-content -->
+				 </div><!-- /.modal-dialog -->
+			  </div><!-- /.modal -->";
+			}
+		}
 
        mysqli_close($con);
     ?>
@@ -248,8 +495,8 @@ if(isset($_SESSION['alert_type'])){
    </div>
    
    
-
-   <div class="tab-pane" id="all">
+   
+   <div class="tab-pane" id="mostCommented">  
    <div class="container" style="margin-top:100px;">
 
     <?php
@@ -259,53 +506,148 @@ if(isset($_SESSION['alert_type'])){
          echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
        }
 
-       $query = "SELECT * FROM user_images";
-
-       if (!mysqli_query($con, $query)) {
-         die('Error: ' . mysqli_error($con));
-       }
-
-       if ($result = mysqli_query($con, $query)) {
-         while ($row = $result->fetch_array()) {
-            $picture = $row['filename'];
-            $heartCount = $row['hearts'];
-            echo "<a href='#'><div class='thumbnail'><div class='caption-btm'><p><span class='label label-danger'>$heartCount <span class='glyphicon glyphicon-heart'></span></span></p></div><img src='$picture' class='img-thumbnail' alt='Responsive image'/></div></a>";
-         }
-       }
+		//Query user and user_images for image information 
+		$imageqry = "SELECT * FROM user_images i, users u WHERE u.id = i.user_id ORDER BY comment_count DESC LIMIT 9";
+		//Prints 9 images and creates 9 modals filled with image information.
+		if ($result = mysqli_query($con, $imageqry)) {
+			while ($row = $result->fetch_array()) {
+				$userID = $row["user_id"];
+				$username = $row["username"];
+				$photoID = $row["photo_id"];
+				$UserImage = $row["filename"];
+				$ProfilePhoto = $row["profile_photo"];
+				$tag1 = $row["tag1"];
+				$tag2 = $row["tag2"];
+				$tag3 = $row["tag3"];
+				$hearts = $row["hearts"];
+				$commentCount = $row["comment_count"];
+				
+				echo "<a href='#mimgView$photoID' role='button' data-toggle='modal'><div class='thumbnail'><div class='caption-btm'><p><span class='label label-danger'>$commentCount <span class='glyphicon glyphicon-comment'></span></span></p></div><img src='$UserImage' height= '275' width='350' class='img-thumbnail' alt='Responsive image'></div></a>";
+					
+				//modal
+				echo "<div id='mimgView$photoID' class='modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
+				echo "<div class='modal-dialog'>
+						<div class='modal-content'>
+						   <div class='modal-header'>
+								<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>
+								<div class='media'>
+								<a class='pull-left'>";
+				echo "          	<img class='img-circle' src='$ProfilePhoto' alt='64x64' style='width: 68px; height: 68px;'>";
+				echo "          </a>
+								<div class='media-body'>";
+				echo "				<h4 class='user-name'>$username</h4>";
+				
+				//   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion'>
+				
+				echo " 			</div>
+						  </div>
+					   </div> <!-- /.modal-header -->
+					   <div class='modal-body' style='height: 615px';>
+						  <div class='top-menu' style='width: 534px;'>
+						  <div class='media-options' style='position:absolute;'>
+								<div class='panel panel-default'>
+							 <div class='panel-group' id='accordian'>
+								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseCList$photoID'><button class='btn'><span class='glyphicon glyphicon-list'></span></button></a>
+								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseComment$photoID'><button class='btn'><span class='glyphicon glyphicon-comment'></span></button></a>
+								</div><!-- //top-panel -->
+								<div>
+								   <div id='collapseCList$photoID' class='panel-collapse collapse' style='background:white;'>
+									  <div class='comments' style='width: 534px; height: 434px; overflow:scroll;'>
+										 <table class='table'>
+											<thead>
+											   <tr>
+												  <th>Comment</th>
+												  <th>Username</th>
+												  <th>Options</th>
+											   </tr>
+											</thead>
+											<tbody>";
+											
+											//query for comments
+											$commentqry = "SELECT * FROM comments WHERE pid = '$photoID'";
+											if ($CommentRow = mysqli_query($con, $commentqry)) {
+												while ($C_row = mysqli_fetch_array($CommentRow)) {
+														$comment = $C_row["comment"];
+														$c_username = $C_row["c_username"];
+														$cid = $C_row["cid"];
+														
+														echo "<tr>
+																<td>$comment</td>
+																<td>$c_username</td>";
+														if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
+															echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
+																	<input type='hidden' name='cid' value='$cid'>
+																	<input type='hidden' name='photo_id' value='$photoID'>
+																	<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
+																	</form>";
+														}else{
+															echo" <td></td>";
+														}
+														echo"</tr> ";
+												}
+											}
+										echo "</tbody>
+										 </table>
+									  </div>
+								   </div>
+								   <div id='collapseComment$photoID' class='panel-collapse collapse' style='background:white;'>
+									  <div class='comment-body'>
+										<form name='commentForm$photoID' action='add_comment.php' class='form-horizontal' role='form' method='post'>		
+											<input type='hidden' name='photo_id' id='photo_id' value ='$photoID'> 
+											<div class='make-comment' style='width: 534px; height: 120px;'>
+												<div class='comment-box'>
+													<textarea type='text' name='user_comment' id='user_comment' class='form-control' rows='3' placeholder='140 Characters Max'></textarea>
+												</div>
+												<div class='sub-comment' style='margin-top:10px;'>
+													<button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</button>
+													<button type='submit' class='btn btn-success'>Submit</button>
+												</div>
+											</div>
+										 </form>
+									  </div> <!-- comment-body -->
+								   </div><!-- collapse-comment -->
+								</div><!-- collapse-panels --> 
+							 </div><!-- panel-group -->
+							 
+						  </div> <!-- media-options -->";
+						  /*<div class='media-options2'>
+							<form name='rating' action='hearts.php' role= 'form' method='post'> 
+										<input type='hidden' name='photo_id' value='$photoID'>
+										<button class='btn' type='submit'><span class='glyphicon glyphicon-heart'></span><span class='badge'>$hearts</span></button>
+							</form>
+							</div> <!-- //media-options2 -->*/
+							
+						echo"	</div> <!-- //top-menu -->
+						  <div class='media'>";
+				echo "		<img class='media-object' src='$UserImage' alt='' style='width: 534px; height: 534px;'>";
+				echo "	  </div><!-- //media end -->
+						  <div class='media-info'>
+							 <div class='tags'  style='width: 470px; float: left;'>
+								<span class='glyphicon glyphicon-tag'></span>
+								$tag1, $tag2, $tag3
+							 </div>
+							
+							<div class='current-hearts' style='float: right;'>
+								<form name='rating' action='hearts.php' role= 'form' method='post'> 
+										<input type='hidden' name='photo_id' value='$photoID'>
+										<button class='btn' type='submit'><span class='glyphicon glyphicon-heart'></span><span class='badge'>$hearts</span></button>
+								</form>
+							</div>
+							
+							</div><!-- //media-info -->
+					   </div> <!-- /.modal-body -->           
+					   <div class='modal-footer' style='margin-top:10px;'>
+						  <button class='btn btn-danger' data-dismiss='modal'>Close</button>
+					   </div><!-- /.modal-footer -->
+					</div><!-- /.modal-content -->
+				 </div><!-- /.modal-dialog -->
+			  </div><!-- /.modal -->";
+			}
+		}
 
        mysqli_close($con);
-    ?>
-    </div> <!-- /container -->
-   </div>
-  
-   
-   
-   <div class="tab-pane" id="mostCommented">
-     
-   <div class="container" style="margin-top:100px;">
 
-    <?php
-       $con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
-       
-       if (mysqli_connect_errno()) {
-         echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
-       }
 
-       $query = "SELECT * FROM user_images ORDER BY comment_count DESC LIMIT 9";
-
-       if (!mysqli_query($con, $query)) {
-         die('Error: ' . mysqli_error($con));
-       }
-
-       if ($result = mysqli_query($con, $query)) {
-         while ($row = $result->fetch_array()) {
-            $picture = $row['filename'];
-            $commentCount = $row['comment_count'];
-            echo "<a href='#'><div class='thumbnail'><div class='caption-btm'><p><span class='label label-danger'>$commentCount <span class='glyphicon glyphicon-comment'></span></span></p></div><img src='$picture' class='img-thumbnail' alt='Responsive image'/></div></a>";
-         }
-       }
-
-       mysqli_close($con);
     ?>
     </div> <!-- /container -->
    </div>
