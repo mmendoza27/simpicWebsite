@@ -1,6 +1,16 @@
 <?php
 session_start();
 
+$alert_type = NULL;
+
+if(isset($_SESSION['alert_type'])){
+   $photoID = $_SESSION['photo_id'];
+   $cid = $_SESSION['cid'];
+   $comment = $_SESSION['comment'];
+   $alert_type = $_SESSION['alert_type'];
+   $_SESSION['alert_type'] = NULL;
+}
+
 $userID= $_GET["id"];
 
 $con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
@@ -73,7 +83,7 @@ mysqli_close($con);
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Images <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li class=""><a data-toggle="tab" href="#popular">Popular</a></li>
-                <!-- <li><a href="#current">Current</a></li> -->
+                <li class=""><a data-toggle="tab" href="#all">All</a></li>
                 <li class=""><a data-toggle="tab" href="#mostCommented">Most Commented</a></li>
               </ul>
             </li>
@@ -176,7 +186,7 @@ mysqli_close($con);
          echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
        }
 
-       $query = "SELECT * FROM users ORDER BY registration_date DESC LIMIT 9";
+       $query = "SELECT * FROM users ORDER BY registration_date DESC";
 
        if (!mysqli_query($con, $query)) {
          die('Error: ' . mysqli_error($con));
@@ -194,11 +204,10 @@ mysqli_close($con);
     ?>
     </div> <!-- /container -->
      
-   </div>
+   </div>   
    
    
    <div class="tab-pane" id="popular">
-   
    <div class="container" style="margin-top:100px;">
 
     <?php
@@ -229,8 +238,38 @@ mysqli_close($con);
      
    </div>
    
-   <div class="tab-pane" id="mostCommented">
-     
+      <div class="tab-pane" id="all">
+   <div class="container" style="margin-top:100px;">
+
+    <?php
+       $con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
+       
+       if (mysqli_connect_errno()) {
+         echo "Couldn't connect to database simpic: " . mysqli_connect_errno();
+       }
+
+       $query = "SELECT * FROM user_images";
+
+       if (!mysqli_query($con, $query)) {
+         die('Error: ' . mysqli_error($con));
+       }
+
+       if ($result = mysqli_query($con, $query)) {
+         while ($row = $result->fetch_array()) {
+            $picture = $row['filename'];
+            $heartCount = $row['hearts'];
+            echo "<a href='#'><div class='thumbnail'><div class='caption-btm'><p><span class='label label-danger'>$heartCount <span class='glyphicon glyphicon-heart'></span></span></p></div><img src='$picture' class='img-thumbnail' alt='Responsive image'/></div></a>";
+         }
+       }
+
+       mysqli_close($con);
+    ?>
+    </div> <!-- /container -->
+   </div>
+   
+   
+   
+   <div class="tab-pane" id="mostCommented">  
    <div class="container" style="margin-top:100px;">
 
     <?php
