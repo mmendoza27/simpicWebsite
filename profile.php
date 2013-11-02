@@ -221,14 +221,18 @@ mysqli_close($con);
 														echo "<tr>
 																<td>$comment</td>
 																<td>$c_username</td>";
-														if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
-															echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
-																	<input type='hidden' name='cid' value='$cid'>
-																	<input type='hidden' name='photo_id' value='$photoID'>
-																	<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
-																	</form>";
-														}else{
-															echo" <td></td>";
+														if(isset($_SESSION['id'])){
+															if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
+																echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
+																		<input type='hidden' name='cid' value='$cid'>
+																		<input type='hidden' name='photo_id' value='$photoID'>
+																		<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
+																		</form>";
+															}else{
+																echo" <td></td>";
+															}
+														}else {
+															echo "<td></td>";
 														}
 														echo"</tr> ";
 												}
@@ -241,22 +245,30 @@ mysqli_close($con);
 									  <div class='comment-body'>
 										<form name='commentForm$photoID' action='add_comment.php' class='form-horizontal' role='form' method='post'>		
 											<input type='hidden' name='photo_id' id='photo_id' value ='$photoID'> 
-											<div class='make-comment' style='width: 534px; height: 120px;'>
+											<div class='make-comment' style='width: 534px; height: 120px;'>";
+											if(isset($_SESSION['id'])){
+											 echo"
 												<div class='comment-box'>
 													<textarea type='text' name='user_comment' id='user_comment' class='form-control' rows='3' placeholder='140 Characters Max'></textarea>
 												</div>
 												<div class='sub-comment' style='margin-top:10px;'>
 													<button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</button>
 													<button type='submit' class='btn btn-success'>Submit</button>
-												</div>
+												</div>";
+											}else{
+												echo "<div class='comment-box'>
+												<p><center>You must sign-in to add a comment.</p>
+													<a data-toggle='modal' href='#login'><button type='button' class='btn btn-primary'>Login</button></center></a>
+													</div>";
+											}
+											echo "	
 											</div>
 										 </form>
 									  </div> <!-- comment-body -->
 								   </div><!-- collapse-comment -->
 								</div><!-- collapse-panels --> 
 							 </div><!-- panel-group -->
-							 
-						  </div> <!-- media-options -->";
+							</div> <!-- media-options -->";
 						  /*<div class='media-options2'>
 							<form name='rating' action='hearts.php' role= 'form' method='post'> 
 										<input type='hidden' name='photo_id' value='$photoID'>
@@ -304,7 +316,7 @@ mysqli_close($con);
    
    <div class="tab-pane" id="people">
      
-   <div class="container" style="margin-top:100px;">
+   <div class="container" style="margin-top:100px; margin-bottom:100px;">
      <?php
        $con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
        
@@ -411,14 +423,18 @@ mysqli_close($con);
 														echo "<tr>
 																<td>$comment</td>
 																<td>$c_username</td>";
-														if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
-															echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
-																	<input type='hidden' name='cid' value='$cid'>
-																	<input type='hidden' name='photo_id' value='$photoID'>
-																	<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
-																	</form>";
-														}else{
-															echo" <td></td>";
+														if(isset($_SESSION['id'])){
+															if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
+																echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
+																		<input type='hidden' name='cid' value='$cid'>
+																		<input type='hidden' name='photo_id' value='$photoID'>
+																		<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
+																		</form>";
+															}else{
+																echo" <td></td>";
+															}
+														}else {
+															echo "<td></td>";
 														}
 														echo"</tr> ";
 												}
@@ -431,22 +447,30 @@ mysqli_close($con);
 									  <div class='comment-body'>
 										<form name='commentForm$photoID' action='add_comment.php' class='form-horizontal' role='form' method='post'>		
 											<input type='hidden' name='photo_id' id='photo_id' value ='$photoID'> 
-											<div class='make-comment' style='width: 534px; height: 120px;'>
+											<div class='make-comment' style='width: 534px; height: 120px;'>";
+											if(isset($_SESSION['id'])){
+											 echo"
 												<div class='comment-box'>
 													<textarea type='text' name='user_comment' id='user_comment' class='form-control' rows='3' placeholder='140 Characters Max'></textarea>
 												</div>
 												<div class='sub-comment' style='margin-top:10px;'>
 													<button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</button>
 													<button type='submit' class='btn btn-success'>Submit</button>
-												</div>
+												</div>";
+											}else{
+												echo "<div class='comment-box'>
+												<p><center>You must sign-in to add a comment.</p>
+													<a data-toggle='modal' href='#login'><button type='button' class='btn btn-primary'>Login</button></center></a>
+													</div>";
+											}
+											echo "	
 											</div>
 										 </form>
 									  </div> <!-- comment-body -->
 								   </div><!-- collapse-comment -->
 								</div><!-- collapse-panels --> 
 							 </div><!-- panel-group -->
-							 
-						  </div> <!-- media-options -->";
+							</div> <!-- media-options -->";
 						  /*<div class='media-options2'>
 							<form name='rating' action='hearts.php' role= 'form' method='post'> 
 										<input type='hidden' name='photo_id' value='$photoID'>
@@ -540,11 +564,11 @@ mysqli_close($con);
 						  <div class='media-options' style='position:absolute;'>
 								<div class='panel panel-default'>
 							 <div class='panel-group' id='accordian'>
-								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseCList$photoID'><button class='btn'><span class='glyphicon glyphicon-list'></span></button></a>
-								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseComment$photoID'><button class='btn'><span class='glyphicon glyphicon-comment'></span></button></a>
+								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#mcollapseCList$photoID'><button class='btn'><span class='glyphicon glyphicon-list'></span></button></a>
+								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#mcollapseComment$photoID'><button class='btn'><span class='glyphicon glyphicon-comment'></span></button></a>
 								</div><!-- //top-panel -->
 								<div>
-								   <div id='collapseCList$photoID' class='panel-collapse collapse' style='background:white;'>
+								   <div id='mcollapseCList$photoID' class='panel-collapse collapse' style='background:white;'>
 									  <div class='comments' style='width: 534px; height: 434px; overflow:scroll;'>
 										 <table class='table'>
 											<thead>
@@ -567,14 +591,18 @@ mysqli_close($con);
 														echo "<tr>
 																<td>$comment</td>
 																<td>$c_username</td>";
-														if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
-															echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
-																	<input type='hidden' name='cid' value='$cid'>
-																	<input type='hidden' name='photo_id' value='$photoID'>
-																	<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
-																	</form>";
-														}else{
-															echo" <td></td>";
+														if(isset($_SESSION['id'])){
+															if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
+																echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
+																		<input type='hidden' name='cid' value='$cid'>
+																		<input type='hidden' name='photo_id' value='$photoID'>
+																		<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
+																		</form>";
+															}else{
+																echo" <td></td>";
+															}
+														}else {
+															echo "<td></td>";
 														}
 														echo"</tr> ";
 												}
@@ -583,26 +611,34 @@ mysqli_close($con);
 										 </table>
 									  </div>
 								   </div>
-								   <div id='collapseComment$photoID' class='panel-collapse collapse' style='background:white;'>
+								   <div id='mcollapseComment$photoID' class='panel-collapse collapse' style='background:white;'>
 									  <div class='comment-body'>
 										<form name='commentForm$photoID' action='add_comment.php' class='form-horizontal' role='form' method='post'>		
 											<input type='hidden' name='photo_id' id='photo_id' value ='$photoID'> 
-											<div class='make-comment' style='width: 534px; height: 120px;'>
+											<div class='make-comment' style='width: 534px; height: 120px;'>";
+											if(isset($_SESSION['id'])){
+											 echo"
 												<div class='comment-box'>
 													<textarea type='text' name='user_comment' id='user_comment' class='form-control' rows='3' placeholder='140 Characters Max'></textarea>
 												</div>
 												<div class='sub-comment' style='margin-top:10px;'>
 													<button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</button>
 													<button type='submit' class='btn btn-success'>Submit</button>
-												</div>
+												</div>";
+											}else{
+												echo "<div class='comment-box'>
+												<p><center>You must sign-in to add a comment.</p>
+													<a data-toggle='modal' href='#login'><button type='button' class='btn btn-primary'>Login</button></center></a>
+													</div>";
+											}
+											echo "	
 											</div>
 										 </form>
 									  </div> <!-- comment-body -->
 								   </div><!-- collapse-comment -->
 								</div><!-- collapse-panels --> 
 							 </div><!-- panel-group -->
-							 
-						  </div> <!-- media-options -->";
+							</div> <!-- media-options -->";
 						  /*<div class='media-options2'>
 							<form name='rating' action='hearts.php' role= 'form' method='post'> 
 										<input type='hidden' name='photo_id' value='$photoID'>

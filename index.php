@@ -199,7 +199,7 @@ if(isset($_SESSION['alert_type'])){
 					   <div class='modal-body' style='height: 615px';>
 						  <div class='top-menu' style='width: 534px;'>
 						  <div class='media-options' style='position:absolute;'>
-								<div class='panel panel-default'>
+							<div class='panel panel-default'>
 							 <div class='panel-group' id='accordian'>
 								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseCList$photoID'><button class='btn'><span class='glyphicon glyphicon-list'></span></button></a>
 								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseComment$photoID'><button class='btn'><span class='glyphicon glyphicon-comment'></span></button></a>
@@ -228,14 +228,18 @@ if(isset($_SESSION['alert_type'])){
 														echo "<tr>
 																<td>$comment</td>
 																<td>$c_username</td>";
-														if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
-															echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
-																	<input type='hidden' name='cid' value='$cid'>
-																	<input type='hidden' name='photo_id' value='$photoID'>
-																	<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
-																	</form>";
-														}else{
-															echo" <td></td>";
+														if(isset($_SESSION['id'])){
+															if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
+																echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
+																		<input type='hidden' name='cid' value='$cid'>
+																		<input type='hidden' name='photo_id' value='$photoID'>
+																		<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
+																		</form>";
+															}else{
+																echo" <td></td>";
+															}
+														}else {
+															echo "<td></td>";
 														}
 														echo"</tr> ";
 												}
@@ -248,22 +252,30 @@ if(isset($_SESSION['alert_type'])){
 									  <div class='comment-body'>
 										<form name='commentForm$photoID' action='add_comment.php' class='form-horizontal' role='form' method='post'>		
 											<input type='hidden' name='photo_id' id='photo_id' value ='$photoID'> 
-											<div class='make-comment' style='width: 534px; height: 120px;'>
+											<div class='make-comment' style='width: 534px; height: 120px;'>";
+											if(isset($_SESSION['id'])){
+											 echo"
 												<div class='comment-box'>
 													<textarea type='text' name='user_comment' id='user_comment' class='form-control' rows='3' placeholder='140 Characters Max'></textarea>
 												</div>
 												<div class='sub-comment' style='margin-top:10px;'>
 													<button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</button>
 													<button type='submit' class='btn btn-success'>Submit</button>
-												</div>
+												</div>";
+											}else{
+												echo "<div class='comment-box'>
+												<p><center>You must sign-in to add a comment.</p>
+													<a data-toggle='modal' href='#login'><button type='button' class='btn btn-primary'>Login</button></center></a>
+													</div>";
+											}
+											echo "	
 											</div>
 										 </form>
 									  </div> <!-- comment-body -->
 								   </div><!-- collapse-comment -->
 								</div><!-- collapse-panels --> 
 							 </div><!-- panel-group -->
-							 
-						  </div> <!-- media-options -->";
+							</div> <!-- media-options -->";
 						  /*<div class='media-options2'>
 							<form name='rating' action='hearts.php' role= 'form' method='post'> 
 										<input type='hidden' name='photo_id' value='$photoID'>
@@ -279,16 +291,26 @@ if(isset($_SESSION['alert_type'])){
 							 <div class='tags'  style='width: 470px; float: left;'>
 								<span class='glyphicon glyphicon-tag'></span>
 								$tag1, $tag2, $tag3
-							 </div>
+							 </div>";
 							
-							<div class='current-hearts' style='float: right;'>
+							//Add Check to see if user is logged in to rate
+							if(isset($_SESSION['id'])){
+							echo "<div class='current-hearts' style='float: right;'>
 								<form name='rating' action='hearts.php' role= 'form' method='post'> 
 										<input type='hidden' name='photo_id' value='$photoID'>
 										<button class='btn' type='submit'><span class='glyphicon glyphicon-heart'></span><span class='badge'>$hearts</span></button>
 								</form>
-							</div>
+							</div>";
+							}else{
+								echo" <div class='current-hearts' style='float: right;'>
+									<a data-toggle='modal' href='#login'>
+									<button class='btn'>
+									<span class='glyphicon glyphicon-heart'></span><span class='badge'>$hearts</span></button></a>
+									</div>
+								";
+							}
 							
-							</div><!-- //media-info -->
+							echo"</div><!-- //media-info -->
 					   </div> <!-- /.modal-body -->           
 					   <div class='modal-footer' style='margin-top:10px;'>
 						  <button class='btn btn-danger' data-dismiss='modal'>Close</button>
@@ -310,7 +332,7 @@ if(isset($_SESSION['alert_type'])){
    
    <div class="tab-pane" id="people">
      
-   <div class="container" style="margin-top:100px;">
+   <div class="container" style="margin-top:100px; margin-bottom:100px;">
      <?php
        $con = mysqli_connect("localhost", "krobbins", "abc123", "simpic");
        
@@ -365,10 +387,10 @@ if(isset($_SESSION['alert_type'])){
 				$tag3 = $row["tag3"];
 				$hearts = $row["hearts"];
 				
-				echo "<a href='#imgView$photoID' role='button' data-toggle='modal'><div class='thumbnail'><div class='caption-btm'><p><span class='label label-danger'>$hearts <span class='glyphicon glyphicon-heart'></span></span></p></div><img src='$UserImage' height= '275' width='350' class='img-thumbnail' alt='Responsive image'></div></a>";
+				echo "<a href='#pimgView$photoID' role='button' data-toggle='modal'><div class='thumbnail'><div class='caption-btm'><p><span class='label label-danger'>$hearts <span class='glyphicon glyphicon-heart'></span></span></p></div><img src='$UserImage' height= '275' width='350' class='img-thumbnail' alt='Responsive image'></div></a>";
 				
 				//modal
-				echo "<div id='imgView$photoID' class='modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
+				echo "<div id='pimgView$photoID' class='modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
 				echo "<div class='modal-dialog'>
 						<div class='modal-content'>
 						   <div class='modal-header'>
@@ -387,8 +409,9 @@ if(isset($_SESSION['alert_type'])){
 					   </div> <!-- /.modal-header -->
 					   <div class='modal-body' style='height: 615px';>
 						  <div class='top-menu' style='width: 534px;'>
-						  <div class='media-options' style='position:absolute;'>
-								<div class='panel panel-default'>
+						  <div class='media-options' style='position:absolute;'>";
+						  
+							echo"	<div class='panel panel-default'>
 							 <div class='panel-group' id='accordian'>
 								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseCList$photoID'><button class='btn'><span class='glyphicon glyphicon-list'></span></button></a>
 								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseComment$photoID'><button class='btn'><span class='glyphicon glyphicon-comment'></span></button></a>
@@ -417,14 +440,18 @@ if(isset($_SESSION['alert_type'])){
 														echo "<tr>
 																<td>$comment</td>
 																<td>$c_username</td>";
-														if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
-															echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
-																	<input type='hidden' name='cid' value='$cid'>
-																	<input type='hidden' name='photo_id' value='$photoID'>
-																	<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
-																	</form>";
-														}else{
-															echo" <td></td>";
+														if(isset($_SESSION['id'])){
+															if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
+																echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
+																		<input type='hidden' name='cid' value='$cid'>
+																		<input type='hidden' name='photo_id' value='$photoID'>
+																		<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
+																		</form>";
+															}else{
+																echo" <td></td>";
+															}
+														}else {
+															echo "<td></td>";
 														}
 														echo"</tr> ";
 												}
@@ -437,22 +464,30 @@ if(isset($_SESSION['alert_type'])){
 									  <div class='comment-body'>
 										<form name='commentForm$photoID' action='add_comment.php' class='form-horizontal' role='form' method='post'>		
 											<input type='hidden' name='photo_id' id='photo_id' value ='$photoID'> 
-											<div class='make-comment' style='width: 534px; height: 120px;'>
+											<div class='make-comment' style='width: 534px; height: 120px;'>";
+											if(isset($_SESSION['id'])){
+											 echo"
 												<div class='comment-box'>
 													<textarea type='text' name='user_comment' id='user_comment' class='form-control' rows='3' placeholder='140 Characters Max'></textarea>
 												</div>
 												<div class='sub-comment' style='margin-top:10px;'>
 													<button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</button>
 													<button type='submit' class='btn btn-success'>Submit</button>
-												</div>
+												</div>";
+											}else{
+												echo "<div class='comment-box'>
+												<p><center>You must sign-in to add a comment.</p>
+													<a data-toggle='modal' href='#login'><button type='button' class='btn btn-primary'>Login</button></center></a>
+													</div>";
+											}
+											echo "	
 											</div>
 										 </form>
 									  </div> <!-- comment-body -->
 								   </div><!-- collapse-comment -->
 								</div><!-- collapse-panels --> 
-							 </div><!-- panel-group -->
-							 
-						  </div> <!-- media-options -->";
+							 </div><!-- panel-group -->";
+						echo"  </div> <!-- media-options -->";
 						  /*<div class='media-options2'>
 							<form name='rating' action='hearts.php' role= 'form' method='post'> 
 										<input type='hidden' name='photo_id' value='$photoID'>
@@ -468,16 +503,26 @@ if(isset($_SESSION['alert_type'])){
 							 <div class='tags'  style='width: 470px; float: left;'>
 								<span class='glyphicon glyphicon-tag'></span>
 								$tag1, $tag2, $tag3
-							 </div>
+							 </div>";
 							
-							<div class='current-hearts' style='float: right;'>
+							//Add Check to see if user is logged in to rate
+							if(isset($_SESSION['id'])){
+							echo "<div class='current-hearts' style='float: right;'>
 								<form name='rating' action='hearts.php' role= 'form' method='post'> 
 										<input type='hidden' name='photo_id' value='$photoID'>
 										<button class='btn' type='submit'><span class='glyphicon glyphicon-heart'></span><span class='badge'>$hearts</span></button>
 								</form>
-							</div>
+							</div>";
+							}else{
+								echo" <div class='current-hearts' style='float: right;'>
+									<a data-toggle='modal' href='#login'>
+									<button class='btn'>
+									<span class='glyphicon glyphicon-heart'></span><span class='badge'>$hearts</span></button></a>
+									</div>
+								";
+							}
 							
-							</div><!-- //media-info -->
+							echo"</div><!-- //media-info -->
 					   </div> <!-- /.modal-body -->           
 					   <div class='modal-footer' style='margin-top:10px;'>
 						  <button class='btn btn-danger' data-dismiss='modal'>Close</button>
@@ -537,21 +582,20 @@ if(isset($_SESSION['alert_type'])){
 								<div class='media-body'>";
 				echo "				<h4 class='user-name'>$username</h4>";
 				
-				//   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion'>
-				
 				echo " 			</div>
 						  </div>
 					   </div> <!-- /.modal-header -->
 					   <div class='modal-body' style='height: 615px';>
 						  <div class='top-menu' style='width: 534px;'>
-						  <div class='media-options' style='position:absolute;'>
+						  <div class='media-options' style='position:absolute;'>";
+						  echo"
 								<div class='panel panel-default'>
 							 <div class='panel-group' id='accordian'>
-								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseCList$photoID'><button class='btn'><span class='glyphicon glyphicon-list'></span></button></a>
-								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapseComment$photoID'><button class='btn'><span class='glyphicon glyphicon-comment'></span></button></a>
+								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#mcollapseCList$photoID'><button class='btn'><span class='glyphicon glyphicon-list'></span></button></a>
+								   <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#mcollapseComment$photoID'><button class='btn'><span class='glyphicon glyphicon-comment'></span></button></a>
 								</div><!-- //top-panel -->
 								<div>
-								   <div id='collapseCList$photoID' class='panel-collapse collapse' style='background:white;'>
+								   <div id='mcollapseCList$photoID' class='panel-collapse collapse' style='background:white;'>
 									  <div class='comments' style='width: 534px; height: 434px; overflow:scroll;'>
 										 <table class='table'>
 											<thead>
@@ -562,6 +606,8 @@ if(isset($_SESSION['alert_type'])){
 											   </tr>
 											</thead>
 											<tbody>";
+											
+											
 											
 											//query for comments
 											$commentqry = "SELECT * FROM comments WHERE pid = '$photoID'";
@@ -574,14 +620,18 @@ if(isset($_SESSION['alert_type'])){
 														echo "<tr>
 																<td>$comment</td>
 																<td>$c_username</td>";
-														if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
-															echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
-																	<input type='hidden' name='cid' value='$cid'>
-																	<input type='hidden' name='photo_id' value='$photoID'>
-																	<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
-																	</form>";
-														}else{
-															echo" <td></td>";
+														if(isset($_SESSION['id'])){
+															if((strcmp($c_username,$_SESSION['userID'])) == 0 || (strcmp($userID, $_SESSION['id'])) == 0 ){
+																echo "	<form name= 'deleteForm$photoID' action='delete_comment.php' class='form-horizontal' role= 'form' method='post'>
+																		<input type='hidden' name='cid' value='$cid'>
+																		<input type='hidden' name='photo_id' value='$photoID'>
+																		<td><button type='submit'><span class='glyphicon glyphicon-trash'></span></button></td>
+																		</form>";
+															}else{
+																echo" <td></td>";
+															}
+														}else {
+															echo "<td></td>";
 														}
 														echo"</tr> ";
 												}
@@ -590,26 +640,34 @@ if(isset($_SESSION['alert_type'])){
 										 </table>
 									  </div>
 								   </div>
-								   <div id='collapseComment$photoID' class='panel-collapse collapse' style='background:white;'>
+								   <div id='mcollapseComment$photoID' class='panel-collapse collapse' style='background:white;'>
 									  <div class='comment-body'>
 										<form name='commentForm$photoID' action='add_comment.php' class='form-horizontal' role='form' method='post'>		
 											<input type='hidden' name='photo_id' id='photo_id' value ='$photoID'> 
-											<div class='make-comment' style='width: 534px; height: 120px;'>
+											<div class='make-comment' style='width: 534px; height: 120px;'>";
+											if(isset($_SESSION['id'])){
+											 echo"
 												<div class='comment-box'>
 													<textarea type='text' name='user_comment' id='user_comment' class='form-control' rows='3' placeholder='140 Characters Max'></textarea>
 												</div>
 												<div class='sub-comment' style='margin-top:10px;'>
 													<button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</button>
 													<button type='submit' class='btn btn-success'>Submit</button>
-												</div>
+												</div>";
+											}else{
+												echo "<div class='comment-box'>
+												<p><center>You must sign-in to add a comment.</p>
+													<a data-toggle='modal' href='#login'><button type='button' class='btn btn-primary'>Login</button></center></a>
+													</div>";
+											}
+											echo "	
 											</div>
 										 </form>
 									  </div> <!-- comment-body -->
 								   </div><!-- collapse-comment -->
 								</div><!-- collapse-panels --> 
 							 </div><!-- panel-group -->
-							 
-						  </div> <!-- media-options -->";
+							</div> <!-- media-options -->";
 						  /*<div class='media-options2'>
 							<form name='rating' action='hearts.php' role= 'form' method='post'> 
 										<input type='hidden' name='photo_id' value='$photoID'>
@@ -625,16 +683,26 @@ if(isset($_SESSION['alert_type'])){
 							 <div class='tags'  style='width: 470px; float: left;'>
 								<span class='glyphicon glyphicon-tag'></span>
 								$tag1, $tag2, $tag3
-							 </div>
+							 </div>";
 							
-							<div class='current-hearts' style='float: right;'>
+							//Add Check to see if user is logged in to rate
+							if(isset($_SESSION['id'])){
+							echo "<div class='current-hearts' style='float: right;'>
 								<form name='rating' action='hearts.php' role= 'form' method='post'> 
 										<input type='hidden' name='photo_id' value='$photoID'>
 										<button class='btn' type='submit'><span class='glyphicon glyphicon-heart'></span><span class='badge'>$hearts</span></button>
 								</form>
-							</div>
+							</div>";
+							}else{
+								echo" <div class='current-hearts' style='float: right;'>
+									<a data-toggle='modal' href='#login'>
+									<button class='btn'>
+									<span class='glyphicon glyphicon-heart'></span><span class='badge'>$hearts</span></button></a>
+									</div>
+								";
+							}
 							
-							</div><!-- //media-info -->
+							echo"</div><!-- //media-info -->
 					   </div> <!-- /.modal-body -->           
 					   <div class='modal-footer' style='margin-top:10px;'>
 						  <button class='btn btn-danger' data-dismiss='modal'>Close</button>
@@ -813,7 +881,6 @@ if(isset($_SESSION['alert_type'])){
    
    
 </div>
-    
         
     <!-- Static bottom navbar -->
     <div class="navbar navbar-default navbar-fixed-bottom">
@@ -1028,11 +1095,12 @@ if(isset($_SESSION['alert_type'])){
        </div>
       </div>
       
-      <div class="modal-body">
+      
+     <div class="modal-body">
        <div class="form-group">
           <label for="inputFile">Upload Photo</label>
           <input name="inputFile" type="file" id="inputFile">
-          <p class="help-block">You may upload a new profile picture from your device.</p>
+          <p class="help-block">Please upload your picture from your device.</p>
         </div>
      </div>
       
