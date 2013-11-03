@@ -138,7 +138,7 @@ $_SESSION['alert_type'] = NULL;
       <span class="input-group-btn">
         <button class="btn btn-default" type="submit">Search</button>
       </span>
-      </form>         
+      </form>
       
        </div><!-- /input-group -->
      </div><!-- /.col-lg-6 -->

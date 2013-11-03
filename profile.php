@@ -118,14 +118,16 @@ mysqli_close($con);
    <div class="alert alert-info">
     <div class="row">
      <div class="col-lg-8">
+      <form name='search_database' action='search.php' role='form' method='post'>
        <div class="input-group input-group-lg">
 
-        <span class="input-group-addon">@</span>
-        <input type="text" class="form-control" placeholder="Username">
+        <span class="input-group-addon">#</span>
+        <input type="text" class="form-control"name='search_string' id='search_string' placeholder="Photo Tag">
 
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Search</button>
-      </span>         
+        <button class="btn btn-default" type="submit">Search</button>
+      </span>
+      </form>
       
        </div><!-- /input-group -->
      </div><!-- /.col-lg-6 -->
@@ -1031,7 +1033,7 @@ mysqli_close($con);
         </div>
         <div class="modal-body">
         
-      <form name="editProfile" action="editProfile.php" class="form-horizontal" role="form" method="post">
+      <form name="editProfile" action="editProfile.php" class="form-horizontal" role="form" enctype="multipart/form-data" method="post">
       <div class="form-group">
        <label for="inputEmail1" class="col-lg-2 control-label">Email</label>
        <div class="col-lg-10">
@@ -1050,12 +1052,7 @@ mysqli_close($con);
          <input type="password" class="form-control" id="inputPassword2" placeholder="Verify Password">
        </div>
       </div>
-      <div class="form-group">
-       <label for="inputUsername1" class="col-lg-2 control-label">Username</label>
-       <div class="col-lg-10">
-         <input type="text" name="inputUsername1" class="form-control" id="inputUsername1" placeholder="Username">
-       </div>
-      </div>
+
       
       <div class="modal-body">
        <div class="form-group">
